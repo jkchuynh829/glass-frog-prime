@@ -1,0 +1,19 @@
+{
+  "name": "glass-frog-prime",
+  "version": "1.0.0",
+  "description": "Find the best deals on Amazon",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jkchuynh829/glass-frog-prime.git"
+  },
+  "author": "Jimmy Huynh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jkchuynh829/glass-frog-prime/issues"
+  },
+  "homepage": "https://github.com/jkchuynh829/glass-frog-prime#readme"
+}
