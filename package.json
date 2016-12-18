@@ -4,7 +4,7 @@
   "description": "Find the best deals on Amazon",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server",
+    "start": "nodemon server/server.js",
     "build": "./node_modules/.bin/webpack -w"
   },
   "repository": {

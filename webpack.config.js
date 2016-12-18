@@ -8,7 +8,7 @@ module.exports = {
   entry: [
     'webpack-dev-server/client?http://localhost:8080',
     'webpack/hot/only-dev-server',
-    CLIENT + '/main.jsx'
+    CLIENT + '/components/main.jsx'
   ],
   output: {
     path: BUILD,
@@ -20,6 +20,7 @@ module.exports = {
     new webpack.NoErrorsPlugin()
   ],
   devServer: {
+    colors: true,
     hot: true,
     port: 8080,
     contentBase: './src/client'
