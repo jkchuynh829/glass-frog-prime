@@ -6,13 +6,14 @@ var CLIENT = path.resolve(__dirname, 'src/client/app')
 
 module.exports = {
   entry: [
-    'webpack-dev-server/client?http://0.0.0.0:8080',
+    'webpack-dev-server/client?http://localhost:8080',
     'webpack/hot/only-dev-server',
     CLIENT + '/main.jsx'
   ],
   output: {
     path: BUILD,
     filename: 'bundle.js',
+    publicPath: '/public/'
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
@@ -20,7 +21,6 @@ module.exports = {
   ],
   devServer: {
     hot: true,
-    inline: true,
     port: 8080,
     contentBase: './src/client'
   },
