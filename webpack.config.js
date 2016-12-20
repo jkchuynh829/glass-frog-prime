@@ -1,12 +1,12 @@
 var path = require('path');
 var webpack = require('webpack');
 
-var BUILD = path.resolve(__dirname, 'src/client/public');
-var CLIENT = path.resolve(__dirname, 'src/client/app')
+var BUILD = path.resolve(__dirname, 'client/public');
+var CLIENT = path.resolve(__dirname, 'client/app')
 
 module.exports = {
   entry: [
-    'webpack-dev-server/client?http://localhost:8080',
+    'webpack-dev-server/client?http://0.0.0.0:3000',
     'webpack/hot/only-dev-server',
     CLIENT + '/components/main.jsx'
   ],
@@ -20,10 +20,15 @@ module.exports = {
     new webpack.NoErrorsPlugin()
   ],
   devServer: {
-    colors: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credential": true,
+      "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS, POST, PUT",
+      "Access-Control-Allow-Headers": "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
+    },
     hot: true,
-    port: 8080,
-    contentBase: './src/client'
+    port: 3000,
+    contentBase: 'client/public'
   },
   module: {
     loaders: [
@@ -31,8 +36,12 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         loaders: ['react-hot', 'babel?presets[]=es2015,presets[]=react'],
-        include: path.join(__dirname, 'src'),
+        include: path.join(__dirname, 'client'),
       },
+      {
+        test: /\.css$/,
+        loader: ['style', 'css']
+      }
     ]
   }
 }
