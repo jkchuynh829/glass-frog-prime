@@ -4,7 +4,7 @@
   "description": "Find the best deals on Amazon",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server",
+    "start": "nodemon server/server.js",
     "build": "./node_modules/.bin/webpack -w"
   },
   "repository": {
@@ -18,10 +18,12 @@
   },
   "homepage": "https://github.com/jkchuynh829/glass-frog-prime#readme",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "ejs": "^2.5.5",
     "express": "^4.14.0",
     "jquery": "^3.1.1",
     "nodemon": "^1.11.0",
+    "pg": "^6.1.2",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-select": "^1.0.0-rc.2",

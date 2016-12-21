@@ -118,3 +118,16 @@ body {
   flex-direction: column;
   flex-wrap: wrap;
 }
+
+.campaign:hover {
+  color: #ef5f3c;
+  cursor: pointer;
+}
+
+.show {
+  visibility: visible;
+}
+
+.hide {
+  visibility: hidden;
+}

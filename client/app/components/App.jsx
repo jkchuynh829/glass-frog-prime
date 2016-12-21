@@ -12,6 +12,7 @@ export default class App extends Component {
     this.state = {
       rootURL: 'https://api.donorschoose.org/common/json_feed.html?keywords=',
       proposals: {},
+      savedProposals: [],
       schoolName: '',
       title: '',
       teacherName: '',
@@ -43,7 +44,6 @@ export default class App extends Component {
   }
 
   addProposal(proposalObj) {
-    console.log('ADD PROPOSAL!!!!! APP LEVEL');
     fetch('/manage', {
       method: 'POST',
       headers: {
@@ -54,11 +54,28 @@ export default class App extends Component {
     });
   }
   
+  getProposal(e) {
+    fetch('/manage', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }).then((data) => {
+      this.setState({
+        savedProposals: data
+      })
+    });
+  }
+
+  hideResults() {
+    
+  }
 
   render() {
     return (
       <div className='container'>
-        <Search search={ this.search }/>
+        <Search search={ this.search } get={ this.getProposal }/>
         <ItemCard proposals={ this.state.proposals } create={ this.addProposal }/>
       </div>
     );

@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "5c505aa7be82af3bbb52"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "2963a71629a1fccb33b6"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -30164,9 +30164,20 @@
 	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
 	    _this.search = _this.search.bind(_this);
+	    _this.addProposal = _this.addProposal.bind(_this);
 	    _this.state = {
 	      rootURL: 'https://api.donorschoose.org/common/json_feed.html?keywords=',
-	      proposals: {}
+	      proposals: {},
+	      savedProposals: [],
+	      schoolName: '',
+	      title: '',
+	      teacherName: '',
+	      city: '',
+	      state: '',
+	      totalPrice: '',
+	      costToComplete: '',
+	      percentage: '',
+	      expiration: ''
 	    };
 	    return _this;
 	  }
@@ -30178,11 +30189,6 @@
 	        var query = document.getElementsByClassName('input-field')[0].value.split(' ').join('+');
 	        this.fetchUrl(query);
 	      }
-	    }
-	  }, {
-	    key: 'click',
-	    value: function click(e, url) {
-	      window.open(url, '_blank');
 	    }
 	  }, {
 	    key: 'fetchUrl',
@@ -30199,13 +30205,45 @@
 	      });
 	    }
 	  }, {
+	    key: 'addProposal',
+	    value: function addProposal(proposalObj) {
+	      fetch('/manage', {
+	        method: 'POST',
+	        headers: {
+	          'Accept': 'application/json',
+	          'Content-Type': 'application/json'
+	        },
+	        body: JSON.stringify(proposalObj)
+	      });
+	    }
+	  }, {
+	    key: 'getProposal',
+	    value: function getProposal(e) {
+	      var _this3 = this;
+
+	      fetch('/manage', {
+	        method: 'POST',
+	        headers: {
+	          'Accept': 'application/json',
+	          'Content-Type': 'application/json'
+	        }
+	      }).then(function (data) {
+	        _this3.setState({
+	          savedProposals: data
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'hideResults',
+	    value: function hideResults() {}
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'container' },
-	        _react2.default.createElement(_Search2.default, { search: this.search }),
-	        _react2.default.createElement(_ItemCard2.default, { proposals: this.state.proposals, link: this.click })
+	        _react2.default.createElement(_Search2.default, { search: this.search, get: this.getProposal }),
+	        _react2.default.createElement(_ItemCard2.default, { proposals: this.state.proposals, create: this.addProposal })
 	      );
 	    }
 	  }]);
@@ -30264,10 +30302,16 @@
 	    value: function render() {
 	      var _this2 = this;
 
-	      var options = [{ value: 1, label: 'Poverty Level' }, { value: 2, label: 'Urgency' }];
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'search-box' },
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'campaign', style: campaign, onClick: function onClick(e) {
+	              return _this2.props.get(e);
+	            } },
+	          'Manage Campaigns'
+	        ),
 	        _react2.default.createElement('input', { className: 'input-field', placeholder: 'Start here...', onKeyPress: function onKeyPress(e) {
 	            return _this2.props.search(e);
 	          } }),
@@ -30284,6 +30328,14 @@
 	}(_react2.default.Component);
 
 	exports.default = Search;
+
+
+	var campaign = {
+	  position: 'absolute',
+	  fontSize: '12px',
+	  right: 20,
+	  top: 10
+	};
 
 	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(279); if (makeExportsHot(module, __webpack_require__(174))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "Search.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
@@ -32778,6 +32830,7 @@
 	      var keys = Object.keys(data);
 	      var proposals = [];
 	      keys.forEach(function (key, i) {
+
 	        var url = data[key].proposalURL;
 	        var img = data[key].imageURL;
 	        var title = _this2.fixString(data[key].title);
@@ -32786,10 +32839,23 @@
 	        var teacher = data[key].teacherName;
 	        var school = _this2.fixString(data[key].schoolName);
 	        var shortDesc = data[key].shortDescription;
+
+	        var proposalObj = {
+	          schoolName: school,
+	          title: title,
+	          teacherName: teacher,
+	          city: city,
+	          state: state,
+	          totalPrice: data[key].totalPrice,
+	          costToComplete: data[key].costToComplete,
+	          percentage: Math.round(100 * (data[key].costToComplete / data[key].totalPrice), 2) + '%',
+	          expiration: data[key].expirationDate
+	        };
+
 	        var itemCard = _react2.default.createElement(
 	          'div',
 	          { className: 'item-card', key: i, onClick: function onClick(e) {
-	              return _this2.props.link(e, url);
+	              return _this2.props.create(proposalObj);
 	            } },
 	          _react2.default.createElement(
 	            'div',
@@ -32826,6 +32892,7 @@
 	            )
 	          )
 	        );
+
 	        proposals.push(itemCard);
 	      });
 	      return _react2.default.createElement(

@@ -7,14 +7,35 @@ export default class Manager extends React.Component {
   }
 
   render() {
-    const data = this.props.proposals;
-    const keys = Object.keys(data);
-    const proposals = [];
-    keys.forEach((key, i) => {
-
+    const data = this.props.savedProposals;
+    const proposalsList = [];
+    data.forEach((data, i) => {
+      const schoolName = data.schoolName;
+      const title = data.title;
+      const teacherName = data.teacherName;
+      const city = data.city;
+      const state = data.state;
+      const totalPrice = data.totalPrice;
+      const costToComplete = data.costToComplete;
+      const percentage = data.percentage;
+      const expiration = data.expiration;
+      const savedCard = (
+        <div className='item-card' key={i} onClick={ e => this.props.create(proposalObj) }>
+          <div>
+            <img className='img' src={img}/>
+          </div>
+          <div style={infoStyle}>
+            <span style={titleStyle}>{title}</span>
+            <span className='teacher' style={locationStyle}>{teacher}'s Class</span>
+            <span style={locationStyle}>{school}, {city}, {state}</span>
+            <span>{shortDesc}</span>
+          </div>
+        </div>
+      );
+      proposalsList.push(savedCard);
     });
     return (
-      <div className='proposal-container'>
+      <div className='savedProposal-container'>
         { proposalsList }
       </div>
     );
