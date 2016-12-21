@@ -8,9 +8,19 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.search = this.search.bind(this);
+    this.addProposal = this.addProposal.bind(this);
     this.state = {
       rootURL: 'https://api.donorschoose.org/common/json_feed.html?keywords=',
       proposals: {},
+      schoolName: '',
+      title: '',
+      teacherName: '',
+      city: '',
+      state: '',
+      totalPrice: '',
+      costToComplete: '',
+      percentage: '',
+      expiration: '',
     }
   }
 
@@ -19,10 +29,6 @@ export default class App extends Component {
       const query = document.getElementsByClassName('input-field')[0].value.split(' ').join('+');
       this.fetchUrl(query);
     }
-  }
-
-  click(e, url) {
-    window.open(url, '_blank');
   }
 
   fetchUrl(query) {
@@ -36,11 +42,24 @@ export default class App extends Component {
     });
   }
 
+  addProposal(proposalObj) {
+    console.log('ADD PROPOSAL!!!!! APP LEVEL');
+    fetch('/manage', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(proposalObj)
+    });
+  }
+  
+
   render() {
     return (
       <div className='container'>
         <Search search={ this.search }/>
-        <ItemCard proposals={ this.state.proposals } link={ this.click }/>
+        <ItemCard proposals={ this.state.proposals } create={ this.addProposal }/>
       </div>
     );
   }
